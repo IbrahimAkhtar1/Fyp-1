@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="student.css">
+    <title>PlanWise | Student Dashboard</title>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Navigation Bar -->
+        <nav class="nav">
+            <div class="nav-logo">
+                <img src="Logo1.png" alt="PlanWise Logo" class="logo-img">
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="#" class="link active">Home</a></li>
+                    <li><a href="#" class="link">Contact</a></li>
+                    <li><a href="#" class="link">Services</a></li>
+                    <li><a href="#" class="link">About</a></li>
+                </ul>
+            </div>
+            <div class="nav-button">
+                <button class="btn white-btn" id="logoutBtn">Logout</button>
+            </div>
+            <div class="nav-menu-btn">
+                <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+            </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-container">
+            <header>
+                <h1>Welcome, Student!</h1>
+                <p>Let’s keep you on top of your exam schedule.</p>
+            </header>
+
+            <!-- My Exams Section -->
+            <section class="my-exams">
+                <h2>My Exams</h2>
+                <div class="exam-cards">
+                    <div class="exam-card">
+                        <p><strong>Subject:</strong> Computer Vision</p>
+                        <p><strong>Date:</strong> 20th November</p>
+                        <p><strong>Time:</strong> 9:00 AM</p>
+                        <p><strong>Room:</strong> A1</p>
+                    </div>
+                    <div class="exam-card">
+                        <p><strong>Subject:</strong> Deep Learning</p>
+                        <p><strong>Date:</strong> 22nd November</p>
+                        <p><strong>Time:</strong> 11:00 AM</p>
+                        <p><strong>Room:</strong> B2</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exam Conflict Alerts Section -->
+            <section class="conflict-alerts">
+                <h2>Exam Conflict Alerts</h2>
+                <div class="alert-box">
+                    <p>We found a clash in your schedule. Tap here for suggested solutions.</p>
+                    <button class="btn resolve-btn">Resolve Conflict</button>
+                </div>
+            </section>
+            <div class="course-selection">
+                <h2>Select Courses to Enroll</h2>
+                
+                <!-- Semester Selection Dropdown -->
+                <label for="semesterSelect">Choose Your Semester:</label>
+                <select id="semesterSelect" onchange="displayCourses()">
+                    <option value="">Select Semester</option>
+                    <option value="1">Semester 1</option>
+                    <option value="2">Semester 2</option>
+                    <option value="3">Semester 3</option>
+                    <option value="4">Semester 4</option>
+                    <option value="5">Semester 5</option>
+                    <option value="6">Semester 6</option>
+                    <option value="7">Semester 7</option>
+                    <option value="8">Semester 8</option>
+                </select>
+                
+                <!-- Course List - This will dynamically display courses -->
+                <form id="enrollForm">
+                    <div class="course-list" id="courseList">
+                        <!-- Courses will appear here based on selected semester -->
+                    </div>
+                    <div class="input-box">
+                        <input type="submit" class="submit" value="Enroll">
+                    </div>
+                </form>
+            
+                <div class="enrolled-courses">
+                    <h3>Enrolled Courses:</h3>
+                    <ul id="enrolledList">
+                        <!-- Enrolled courses will appear here -->
+                    </ul>
+                </div>
+            </div>
+            
+            <script>
+                // Course data based on semesters
+                const coursesBySemester = {
+                    1: [
+                        { code: "CSC 1101", title: "Calculus and Analytical Geometry" },
+                        { code: "CSC 1102", title: "English Composition and Comprehension" },
+                        { code: "CSC 1103", title: "Fundamentals of Programming" },
+                        { code: "CSCL 1103", title: "Lab: Fundamentals of Programming" },
+                        { code: "CSC 1108", title: "Introduction to Computer Science" },
+                        { code: "CSCL1108", title: "Lab: Introduction to Computer Science" },
+                        { code: "CSC 1107", title: "Applied Physics" },
+                        { code: "CSCL 1107", title: "Lab: Applied Physics" }
+                    ],
+                    2: [
+                        { code: "CSC 1208", title: "Object Oriented Programming Techniques" },
+                        { code: "CSCL 1208", title: "Lab: Object Oriented Programming Techniques" },
+                        { code: "CSC 1206", title: "Probability and Statistics" },
+                        { code: "CSC 1207", title: "Digital Logic Design" },
+                        { code: "CSCL 1207", title: "Lab: Digital Logic Design" },
+                        { code: "CSC 1209", title: "Islamic Studies/ Humanities" },
+                        { code: "CSC 1211", title: "Ideology and Constitution of Pakistan" },
+                        { code: "CSC 2101", title: "Communication and Presentation Skills" }
+                    ],
+                    3: [
+                        { code: "CSC 2102", title: "Data Structures and Algorithms" },
+                        { code: "CSCL 2102", title: "Lab: Data Structures and Algorithms" },
+                        { code: "CSC 3105", title: "Computer Organization and Assembly Language" },
+                        { code: "CSCL 3105", title: "Lab: Computer Organization and Assembly Language" },
+                        { code: "CSC 1201", title: "Discrete Mathematical Structures" },
+                        { code: "CSC 3206", title: "Artificial Intelligence" },
+                        { code: "CSCL 3206", title: "Lab: Artificial Intelligence" },
+                        { code: "CSC 1202", title: "Multivariate Calculus" }
+                    ],
+                    4: [
+                        { code: "CSC 3209", title: "Computer Networks" },
+                        { code: "CSCL 3209", title: "Lab: Computer Networks" },
+                        { code: "CSC 2203", title: "Database Systems" },
+                        { code: "CSCL 2203", title: "Lab: Database Systems" },
+                        { code: "CSC 3202", title: "Design and Analysis of Algorithms" },
+                        { code: "AIC 2401", title: "Programming for Artificial Intelligence" },
+                        { code: "AICL 2401", title: "Lab: Programming for Artificial Intelligence" },
+                        { code: "CSC 2206", title: "Linear Algebra" },
+                        { code: "AIC xxxx", title: "AI Elective - I" }
+                    ],
+                    5: [
+                        { code: "CSC 3107", title: "Operating Systems" },
+                        { code: "CSCL 3107", title: "Lab: Operating Systems" },
+                        { code: "AIC 3501", title: "Artificial Neural Networks" },
+                        { code: "AICL 3501", title: "Lab: Artificial Neural Networks" },
+                        { code: "AIC 3503", title: "Machine Learning" },
+                        { code: "AICL 3503", title: "Lab: Machine Learning" },
+                        { code: "AIC 3502", title: "Knowledge Representation and Reasoning" },
+                        { code: "AIC xxxx", title: "AI Elective - II" },
+                        { code: "CSC 3111", title: "Entrepreneurship" }
+                    ],
+                    6: [
+                        { code: "CSC 1205", title: "Technical and Business Writing" },
+                        { code: "AIC 3605", title: "Computer Vision" },
+                        { code: "AICL 3605", title: "Lab: Computer Vision" },
+                        { code: "AIC xxxx", title: "University Elective - I" },
+                        { code: "CSC 3109", title: "Software Engineering" },
+                        { code: "AIC xxxx", title: "AI Elective - III" },
+                        { code: "CSC 3110", title: "Civics & Community Engagement" }
+                    ],
+                    7: [
+                        { code: "CSC 4107", title: "Information Security" },
+                        { code: "CSCL 4107", title: "Lab: Information Security" },
+                        { code: "CSC 4109", title: "Professional Practices" },
+                        { code: "AIC 4xxx", title: "AI Elective - IV" },
+                        { code: "AIC 4xxx", title: "AI Elective - V" },
+                        { code: "AIC 4707", title: "Final Year Project - I" },
+                        { code: "AIC xxxx", title: "AI Elective - VI" }
+                    ],
+                    8: [
+                        { code: "AIC 4807", title: "Final Year Project-II" },
+                        { code: "AIC 4xxx", title: "AI Elective – VII" },
+                        { code: "CSC 4106", title: "Parallel and Distributed Computing" },
+                        { code: "CSC xxxx", title: "University Elective - II" }
+                    ]
+                };
+            
+                // Function to display courses based on the selected semester
+                function displayCourses() {
+                    const semester = document.getElementById("semesterSelect").value;
+                    const courseList = document.getElementById("courseList");
+                    courseList.innerHTML = "";  // Clear previous courses
+            
+                    if (semester && coursesBySemester[semester]) {
+                        coursesBySemester[semester].forEach(course => {
+                            const label = document.createElement("label");
+                            label.innerHTML = `<input type="checkbox" name="courses" value="${course.code}"> ${course.code} - ${course.title}`;
+                            courseList.appendChild(label);
+                            courseList.appendChild(document.createElement("br"));
+                        });
+                    }
+                }
+            
+                // Form submission event to display enrolled courses
+                document.getElementById("enrollForm").addEventListener("submit", function(event) {
+                    event.preventDefault();
+                    const enrolledList = document.getElementById("enrolledList");
+                    enrolledList.innerHTML = "";  // Clear previous enrolled courses
+            
+                    // Get selected courses
+                    const selectedCourses = Array.from(document.querySelectorAll('input[name="courses"]:checked'));
+                    selectedCourses.forEach(course => {
+                        const li = document.createElement("li");
+                        li.textContent = course.value;
+                        enrolledList.appendChild(li);
+                    });
+                });
+            </script>
+            
+             
+    <script src="student.js"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="admin.css">
+    <title>PlanWise | Admin Dashboard</title>
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <img src="Logo1.png" alt="Logo" class="logo-img">
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="#" class="link" onclick="showSection('dashboardSection')">Dashboard</a></li>
+                    <li><a href="#" class="link" onclick="showSection('manageStudentsSection')">Manage Students</a></li>
+                    <li><a href="#" class="link" onclick="showSection('uploadDateSheetSection')">Upload Date Sheet</a></li>
+                    <li><a href="#" class="link" onclick="showSection('clashesDetectionSection')">Clashes Detection</a></li>
+                    <li><a href="#" class="link" onclick="showSection('reportSection')">Reports</a></li>
+                    <li><a href="#" class="link" onclick="showSection('settingsSection')">Settings</a></li>
+                </ul>
+            </div>
+            <div class="nav-button">
+                <button class="btn white-btn" id="logoutBtn">Logout</button>
+            </div>
+            <div class="nav-menu-btn">
+                <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+            </div>
+        </nav>
+
+        <!------------------ Admin Dashboard Content ------------------>
+        <div class="dashboard-container">
+            <header>
+                <h1>Welcome, Admin</h1>
+            </header>
+
+            <div class="admin-panel">
+                <!-- Dashboard Section -->
+                <div id="dashboardSection">
+                    <h2>Dashboard Overview</h2>
+                    <div class="key-metrics">
+                        <div class="metric">
+                            <h3>Total Students</h3>
+                            <p id="totalStudentsCount">150</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Total Courses</h3>
+                            <p id="totalCoursesCount">10</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Upcoming Exams</h3>
+                            <p id="upcomingExamsCount">5</p>
+                        </div>
+                    </div>
+                    <p>Welcome to the admin dashboard. Choose an option from the menu to proceed.</p>
+                </div>
+
+                <!-- Manage Students Section -->
+                <div id="manageStudentsSection" style="display: none;">
+                    <h2>Manage Students</h2>
+                    <form id="studentForm">
+                        <input type="text" class="input-field" id="studentName" placeholder="Enter Student Name" required>
+                        <input type="submit" class="submit" value="Add Student">
+                    </form>
+                    <div class="enrolled-students">
+                        <h3>Enrolled Students List:</h3>
+                        <ul id="studentList">
+                            <!-- Students will be listed here -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Upload Date Sheet Section -->
+                <div id="uploadDateSheetSection" style="display: none;">
+                    <h2>Upload Exam Date Sheet</h2>
+                    <form id="uploadForm">
+                        <div class="input-box">
+                            <input type="file" class="input-field" id="dateSheetFile" accept=".csv" required>
+                        </div>
+                        <input type="submit" class="submit" value="Upload">
+                    </form>
+                    <div class="uploaded-datesheet">
+                        <h3>Uploaded Date Sheet:</h3>
+                        <ul id="examList">
+                            <!-- Uploaded exam dates will appear here -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Clashes Detection Section -->
+                <div id="clashesDetectionSection" style="display: none;">
+                    <h2>Clashes Detection</h2>
+                    <button class="submit" id="detectClashesBtn">Detect Clashes</button>
+                    <div class="exam-clashes">
+                        <h3>Detected Exam Clashes:</h3>
+                        <ul id="clashList">
+                            <!-- Detected clashes will appear here -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Reports Section -->
+                <div id="reportSection" style="display: none;">
+                    <h2>Reports</h2>
+                    <p>Generate and view reports based on student performance and exam statistics.</p>
+                    <button class="submit" id="generateReportBtn">Generate Report</button>
+                    <div class="reports-list">
+                        <h3>Generated Reports:</h3>
+                        <ul id="reportsList">
+                            <!-- Reports will appear here -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Settings Section -->
+                <div id="settingsSection" style="display: none;">
+                    <h2>Settings</h2>
+                    <form id="settingsForm">
+                        <div class="input-box">
+                            <label for="adminEmail">Admin Email:</label>
+                            <input type="email" class="input-field" id="adminEmail" placeholder="Update Admin Email" required>
+                        </div>
+                        <input type="submit" class="submit" value="Update Settings">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle menu toggle
+        function myMenuFunction() {
+            var i = document.getElementById("navMenu");
+            if (i.className === "nav-menu") {
+                i.className += " responsive";
+            } else {
+                i.className = "nav-menu";
+            }
+        }
+
+        // Function to show the appropriate section
+        function showSection(sectionId) {
+            // Hide all sections
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('manageStudentsSection').style.display = 'none';
+            document.getElementById('uploadDateSheetSection').style.display = 'none';
+            document.getElementById('clashesDetectionSection').style.display = 'none';
+            document.getElementById('reportSection').style.display = 'none';
+            document.getElementById('settingsSection').style.display = 'none';
+
+            // Show the clicked section
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // Admin functions
+        document.getElementById('studentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var studentName = document.getElementById('studentName').value;
+            if (studentName) {
+                var studentList = document.getElementById('studentList');
+                var li = document.createElement('li');
+                li.textContent = studentName;
+                studentList.appendChild(li);
+                alert('Student added successfully!');
+                document.getElementById('studentName').value = '';  // Clear the input field
+            } else {
+                alert('Please enter a student name.');
+            }
+        });
+
+        // Handle exam date sheet upload
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var dateSheetFile = document.getElementById('dateSheetFile').files[0];
+            if (dateSheetFile) {
+                var examList = document.getElementById('examList');
+                examList.innerHTML = `<li>Uploaded file: ${dateSheetFile.name}</li>`;
+                alert('Date sheet uploaded successfully!');
+            } else {
+                alert('Please select a file to upload.');
+            }
+        });
+
+        // Detect clashes (placeholder functionality)
+        document.getElementById('detectClashesBtn').addEventListener('click', function() {
+            var clashList = document.getElementById('clashList');
+            clashList.innerHTML = '<li>No clashes detected.</li>';  // Placeholder - actual logic can be added
+            alert('Clashes detection completed!');
+        });
+
+        // Generate report (placeholder functionality)
+        document.getElementById('generateReportBtn').addEventListener('click', function() {
+            var reportsList = document.getElementById('reportsList');
+            var reportId = reportsList.children.length + 1;
+            reportsList.innerHTML += `<li>Report ${reportId} generated.</li>`;
+            alert('Report generated successfully!');
+        });
+
+        // Handle settings update
+        document.getElementById('settingsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var adminEmail = document.getElementById('adminEmail').value;
+            alert(`Settings updated! New Admin Email: ${adminEmail}`);
+        });
+
+        // Handle logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('loggedInUser');
+            window.location.href = 'index.html';
+        });
+
+        // Load logged-in admin's name on dashboard load
+        document.addEventListener("DOMContentLoaded", function() {
+            var loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                document.getElementById('welcomeMessage').textContent = `Welcome, ${loggedInUser}`;
+            }
+        });
+    </script>
+</body>
+</html>
